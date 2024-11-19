@@ -1,4 +1,4 @@
-import { IoLogoWhatsapp } from "react-icons/io5";
+import { IoLogoWhatsapp } from "react-icons/io5"
 
 const WhatsAppButton = () => {
   const whatsappNumber = "+5491138126428";
