@@ -1,9 +1,10 @@
-import { convertToUSD, getOrderById, sendOrderConfirmationEmail } from "@/actions";
+import { convertToUSD, createMercadoPagoPreference, getOrderById, sendOrderConfirmationEmail } from "@/actions";
 import { OrderStatus, PayPalButton } from "@/components";
 import Title from "@/components/ui/title/Title";
 import { currencyFormat } from "@/helpers/currencyFormat";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import MercadoPagoButton from "./components/MercadoPagoButton";
 
 interface Props {
   params: {
@@ -20,6 +21,8 @@ export default async function OrdersByIdPage({ params }: Props) {
   if (!ok) {
     redirect("/");
   }
+
+  const { preferenceId } = await createMercadoPagoPreference(order!.id);
 
   if(order?.isPaid) {
     await sendOrderConfirmationEmail(order!.id);
@@ -137,6 +140,7 @@ export default async function OrdersByIdPage({ params }: Props) {
                 // Renderizar PayPalButton con el monto convertido
                 <PayPalButton amount={convertedAmount!} orderId={order!.id} />
               )}
+                <MercadoPagoButton preferenceId={preferenceId} />
             </div>
 
           </div>

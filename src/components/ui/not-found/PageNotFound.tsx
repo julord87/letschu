@@ -28,6 +28,10 @@ export default function PageNotFound() {
         />
       </div>
 
+      <div>
+        <Link href="/">Regresar al inicio</Link>
+      </div>
+
 
     </div>
   );

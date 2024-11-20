@@ -32,3 +32,6 @@ export { changeUserRole } from './users/change-user-role'
 export { getCategories } from './categories/get-categories'
 
 export { getTypes } from './typeses/get-types'
+
+export { createMercadoPagoPreference } from './mercado-pago/api'
+export { checkPaymentAndUpdateOrder } from './mercado-pago/mercado-pago-check-payment'
