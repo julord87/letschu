@@ -15,7 +15,7 @@ export const TopMenu = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setLoaded(true);
+    setLoaded(true)
   }, []);
 
   return (
