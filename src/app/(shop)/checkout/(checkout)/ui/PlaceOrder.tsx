@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 import { placeOrder } from "@/actions";
@@ -10,7 +9,6 @@ import { currencyFormat } from "@/helpers/currencyFormat";
 import { useShippingMethodStore } from "@/store/shipping/shipping-method-store";
 
 export const PlaceOrder = () => {
-  const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -18,13 +16,14 @@ export const PlaceOrder = () => {
   // Datos de la dirección y el carrito
   const address = useAddressStore((state) => state.address);
   const { shippingMethod, shippingProductId } = useShippingMethodStore((state) => ({
-  shippingMethod: state.shippingMethod,
-  shippingProductId: state.shippingProductId,
+    shippingMethod: state.shippingMethod,
+    shippingProductId: state.shippingProductId,
   }));
+  
 
   const { totalItems, subtotal, total } = useCartStore((state) =>
     state.getSummaryInformation()
-  );
+  );  
   const cart = useCartStore((state) => state.cart);
   const clearCart = useCartStore((state) => state.clearCart);
 
@@ -50,11 +49,11 @@ export const PlaceOrder = () => {
     // Limpiar carrito y redirigir
     if (resp.ok) {
       clearCart();
+      setTimeout(() => {
+        // Redirigir usando window.location
+        window.location.href = `/orders/${resp.order?.id}`;
+      }, 0);
     }
-
-    // setTimeout(() => {
-    //   router.push("/orders/" + resp.order?.id);
-    // }, 6000);
 
     if (!resp.ok) {
       setIsPlacingOrder(false);
