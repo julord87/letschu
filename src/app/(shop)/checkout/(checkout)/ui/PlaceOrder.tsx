@@ -15,15 +15,16 @@ export const PlaceOrder = () => {
 
   // Datos de la dirección y el carrito
   const address = useAddressStore((state) => state.address);
-  const { shippingMethod, shippingProductId } = useShippingMethodStore((state) => ({
-    shippingMethod: state.shippingMethod,
-    shippingProductId: state.shippingProductId,
-  }));
-  
+  const { shippingMethod, shippingProductId } = useShippingMethodStore(
+    (state) => ({
+      shippingMethod: state.shippingMethod,
+      shippingProductId: state.shippingProductId,
+    })
+  );
 
   const { totalItems, subtotal, total } = useCartStore((state) =>
     state.getSummaryInformation()
-  );  
+  );
   const cart = useCartStore((state) => state.cart);
   const clearCart = useCartStore((state) => state.clearCart);
 
@@ -35,6 +36,7 @@ export const PlaceOrder = () => {
   // Manejar la acción de realizar la orden
   const onPlaceOrder = async () => {
     setIsPlacingOrder(true);
+    setErrorMessage("");
 
     // Preparar productos para la orden
     const productsToOrder = cart.map((product) => ({
@@ -44,7 +46,12 @@ export const PlaceOrder = () => {
     }));
 
     // Llamar a la acción del servidor, incluyendo el shippingMethod
-    const resp = await placeOrder(productsToOrder, address, shippingMethod, shippingProductId); // Pasar ID del producto de envío
+    const resp = await placeOrder(
+      productsToOrder,
+      address,
+      shippingMethod,
+      shippingProductId
+    ); // Pasar ID del producto de envío
 
     // Limpiar carrito y redirigir
     if (resp.ok) {
@@ -53,13 +60,11 @@ export const PlaceOrder = () => {
         // Redirigir usando window.location
         window.location.href = `/orders/${resp.order?.id}`;
       }, 0);
-    }
-
-    if (!resp.ok) {
-      setIsPlacingOrder(false);
-      setErrorMessage(resp.message || "An unexpected error occurred");
       return;
     }
+    // Manejar error si la respuesta no es exitosa
+    setIsPlacingOrder(false);
+    setErrorMessage(resp.message || "An unexpected error occurred");
   };
 
   if (!loaded) {
