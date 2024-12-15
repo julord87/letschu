@@ -69,7 +69,7 @@ export const PlaceOrder = () => {
 
   if (!loaded) {
     return <p>Cargando...</p>;
-  }
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-xl p-7">
