@@ -17,8 +17,10 @@ export const PlaceOrder = () => {
 
   // Datos de la dirección y el carrito
   const address = useAddressStore((state) => state.address);
-  const shippingMethod = useShippingMethodStore((state) => state.shippingMethod);
-  const shippingProductId = useShippingMethodStore((state) => state.shippingProductId);
+  const { shippingMethod, shippingProductId } = useShippingMethodStore((state) => ({
+    shippingMethod: state.shippingMethod,
+    shippingProductId: state.shippingProductId,
+  }));
 
   const { totalItems, subtotal, total } = useCartStore((state) =>
     state.getSummaryInformation()
